@@ -4,25 +4,18 @@
 package ${package};
 
 import ${package}.service.GreetingService;
-import ${package}.ui.TextUi;
-import ${package}.ui.HelloUi;
+import ${package}.view.TextView;
 
 public class HelloWorldApp {
 	private GreetingService service = new GreetingService();
-	private HelloUi ui = new TextUi();
+	private TextView ui = new TextView();
 	
 	public static void main(String[] args) {
 		HelloWorldApp app = new HelloWorldApp();
-		if (args.length > 0) {
-			app.sayHelloTo(args[0]);
-		} else {
-			app.sayHelloTo("World");
-		}
-		
+		app.sayHello();		
 	}	
 	
-	public void sayHelloTo(String user){
-		service.setUserName(user);
+	public void sayHello(){
 		ui.setMessage(service.getGreet());
 		System.out.println(ui.display());
 	}
