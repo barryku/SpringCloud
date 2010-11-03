@@ -8,7 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.barryku.springmvc.service.GreetingService;
+import ${package}.service.GreetingService;
 
 @Controller
 public class GreetingController {

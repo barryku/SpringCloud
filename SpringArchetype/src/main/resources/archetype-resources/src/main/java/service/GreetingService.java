@@ -3,8 +3,6 @@
 #set( $symbol_escape = '\' )
 package ${package}.service;
 
-import com.barryku.springmvc.dao.UserDao;
-
 import ${package}.dao.UserDao;
 
 public class GreetingService {

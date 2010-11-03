@@ -3,7 +3,7 @@
 #set( $symbol_escape = '\' )
 package ${package}.dao;
 
-import com.barryku.springmvc.model.User;
+import ${package}.model.User;
 
 public class UserDao {
 	private static User[] users = new User[3]; 
