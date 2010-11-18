@@ -45,5 +45,36 @@
 			</bean>
 		</constructor-arg>
 		<property name="bucket" value="${amazon.bucket}"/>	
-	</bean>    
+	</bean>  
+	
+	<bean id="dropboxRepositoryService" class="com.barryku.cloud.service.impl.RepositoryDropboxImpl">
+		<property name="client">
+			<bean class="com.barryku.cloud.service.helper.DropboxClient">
+				<property name="auth">
+					<bean class="com.barryku.cloud.service.helper.Authenticator">
+						<property name="token" value="${dropbox.consumerKey}"/>
+						<property name="tokenSecret" value="${dropbox.consumerSecret}"/>			
+						<property name="consumer">
+							<bean class="oauth.signpost.basic.DefaultOAuthConsumer">
+								<constructor-arg value="${dropbox.consumerKey}"/>
+								<constructor-arg value="${dropbox.consumerSecret}"/>
+							</bean>
+						</property>
+						<property name="provider">
+							<bean class="oauth.signpost.basic.DefaultOAuthProvider">
+								<constructor-arg value="${dropbox.requestTokenUrl}"/>
+								<constructor-arg value="${dropbox.accessTokenUrl}"/>
+								<constructor-arg value="${dropbox.authorizationUrl}"/>
+							</bean>
+						</property>
+					</bean>
+				</property>
+				<property name="restUrl" value="https://${dropbox.contentServer}/"/>
+				<property name="httpRestUrl" value="http://${dropbox.server}/"/>
+				<property name="apiVersion" value="${dropbox.apiVersion}"/>
+				<property name="userId" value="${dropbox.user}"/>
+				<property name="userPassword" value="${dropbox.userPassword}"/>
+			</bean>
+		</property>
+	</bean>	  
 </beans>

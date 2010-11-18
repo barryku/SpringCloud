@@ -38,7 +38,7 @@ private static final String FOLDER_SUFFIX = "/";
 		FileStream result = new FileStream(obj.getObjectContent(), obj.getObjectMetadata().getContentLength());
 		return result;
 	}
-
+	
 	@Override
 	public List<String> getAssetList(String path) {
 		List<String> result = new ArrayList<String>();		
@@ -52,14 +52,14 @@ private static final String FOLDER_SUFFIX = "/";
 		
 		return result;
 	}
-
+	
 	@Override
 	public void putAsset(String path, String assetName, InputStream asset) {
 		ObjectMetadata meta = new ObjectMetadata();
 		meta.setContentLength(((ByteArrayInputStream) asset).available());
 		s3.putObject(new PutObjectRequest(bucket, getS3Path(path) + assetName, asset, meta));
 	}
-
+	
 	private String getS3Path(String path) {
 		//remove root path: /
 		if (path.startsWith(FOLDER_SUFFIX)) {
