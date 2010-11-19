@@ -76,5 +76,46 @@
 				<property name="userPassword" value="${dropbox.userPassword}"/>
 			</bean>
 		</property>
+	</bean>	
+	
+	<bean id="credentials" class="org.apache.commons.httpclient.UsernamePasswordCredentials">
+	  <constructor-arg value="${twilio.sid}" />
+	  <constructor-arg value="${twilio.authToken}" />
+	</bean>
+	
+	<bean id="twilioSmsConfig" class="com.barryku.cloud.controller.helper.TwilioSmsConfig">
+		<property name="restUrl" value="${twilio.restUrl}/${twilio.sid}/SMS/Messages"/>
+		<property name="fromNumber" value="${twilio.fromNumber}"/>
+	</bean>
+	
+	<bean id="restTemplate" class="org.springframework.web.client.RestTemplate">
+	  <constructor-arg>
+	  	<bean class="org.springframework.http.client.CommonsClientHttpRequestFactory">
+		  <constructor-arg>
+		    <bean class="org.apache.commons.httpclient.HttpClient">
+		      <constructor-arg>
+		        <bean class="org.apache.commons.httpclient.params.HttpClientParams">
+		          <property name="authenticationPreemptive" value="true" />
+		          <property name="connectionManagerClass"
+		          value="org.apache.commons.httpclient.MultiThreadedHttpConnectionManager" />
+		        </bean>
+		      </constructor-arg>
+		    </bean>
+		  </constructor-arg>	  	
+	  	</bean>
+	  </constructor-arg>
+	  <property name="messageConverters">
+	    <list>
+	      <bean class="org.springframework.http.converter.FormHttpMessageConverter" />
+	      <bean class="org.springframework.http.converter.StringHttpMessageConverter" >
+	      	<property name = "supportedMediaTypes">
+				<list>
+					<value>text/plan</value>
+					<value>application/xml</value>
+				</list>
+			</property>	      
+	      </bean>
+	    </list>
+	  </property>
 	</bean>	  
 </beans>
