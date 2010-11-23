@@ -5,8 +5,11 @@
 	xsi:schemaLocation="http://www.springframework.org/schema/beans 
 	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
 	http://www.springframework.org/schema/context
-	http://www.springframework.org/schema/context/spring-context-3.0.xsd"
-	xmlns:context="http://www.springframework.org/schema/context">
+	http://www.springframework.org/schema/context/spring-context-3.0.xsd
+	http://www.springframework.org/schema/util 
+	http://www.springframework.org/schema/util/spring-util-3.0.xsd"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:util="http://www.springframework.org/schema/util">
 
     <context:property-placeholder location="/WEB-INF/spring.properties"/>	
 	<context:component-scan base-package="com.barryku.cloud.controller"></context:component-scan>
@@ -118,4 +121,37 @@
 	    </list>
 	  </property>
 	</bean>	  
+	
+	<util:constant id="oauthVerb" static-field="org.scribe.model.Verb.POST"/>
+	<bean id="twitterOAuth" class="org.scribe.oauth.OAuth10aServiceImpl">
+		<constructor-arg>
+			<bean class="org.scribe.services.HMACSha1SignatureService"/>
+		</constructor-arg>
+		<constructor-arg>
+			<bean class="org.scribe.extractors.BaseStringExtractorImpl"/>
+		</constructor-arg>
+		<constructor-arg>
+			<bean class="org.scribe.services.TimestampServiceImpl"/>
+		</constructor-arg>
+		<constructor-arg>
+			<bean class="org.scribe.extractors.HeaderExtractorImpl"/>
+		</constructor-arg>
+		<constructor-arg>
+			<bean class="org.scribe.extractors.TokenExtractorImpl"/>
+		</constructor-arg>
+		<constructor-arg>
+			<bean class="org.scribe.extractors.TokenExtractorImpl"/>
+		</constructor-arg>	
+		<constructor-arg>
+			<bean class="org.scribe.model.OAuthConfig">
+				<property name="accessTokenEndpoint" value="${twitter.accessTokenEndpoint}"/>
+				<property name="requestTokenEndpoint" value="${twitter.requestTokenEndpoint}"/>
+				<property name="accessTokenVerb" value="#{oauthVerb}"/>
+				<property name="requestTokenVerb" value="#{oauthVerb}"/>
+				<property name="apiKey" value="${twitter.apiKey}"/>
+				<property name="apiSecret" value="${twitter.apiSecret}"/>
+				<property name="callback" value="${twitter.callback}"/>
+			</bean>
+		</constructor-arg>
+	</bean>
 </beans>
