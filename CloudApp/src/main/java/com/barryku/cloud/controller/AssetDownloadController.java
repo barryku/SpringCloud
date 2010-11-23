@@ -27,7 +27,7 @@ public class AssetDownloadController {
 	private RepositoryService repositoryService;
 	
 	@RequestMapping("/assets/{assetName}")
-	public String getAsset(@PathVariable("assetName") String assetName, HttpServletRequest request,
+	public void getAsset(@PathVariable("assetName") String assetName, HttpServletRequest request,
 			HttpServletResponse response) throws IOException {
 		
 		String mimetype = request.getSession().getServletContext().getMimeType(assetName);
@@ -37,7 +37,6 @@ public class AssetDownloadController {
 		response.setHeader("Content-Disposition","attachment; filename=\"" + assetName +"\"");
 		FileCopyUtils.copy(file.getInputStream() , response.getOutputStream());
 
-		return null;
 	}
 	
 	@RequestMapping("/assets")
