@@ -18,7 +18,6 @@ import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.ProtocolVersion;
 import org.apache.http.StatusLine;
-import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
@@ -120,13 +119,6 @@ public class DropboxClient {
         }
         
 		return files;
-	}
-	
-	private void initSession() throws ClientProtocolException, IOException {
-		String target = "https://api.dropbox.com/0/token?email=mypixo@yahoo.com&password=sWRiKVsUnjnAoMuk9H9N&oauth_consumer_key=cqcqecmqtvvaiys";
-		HttpClient client = new DefaultHttpClient();
-		HttpGet req = new HttpGet(target);
-		HttpResponse response = client.execute(req);
 	}
 	
 	public HttpResponse getFile(String path, String fileName) throws OAuthCommunicationException, IOException, OAuthException {
