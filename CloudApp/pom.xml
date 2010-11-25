@@ -20,12 +20,22 @@
       <id>jboss Maven repo</id>
       <url>http://repository.jboss.org/maven2</url>
     </repository>
+    
+    <!--  added for Spring Social -->		
     <repository>
 			<id>org.springframework.maven.milestone</id>
 			<name>Spring Maven Milestone Repository</name>
 			<url>http://maven.springframework.org/milestone</url>
 			<snapshots><enabled>false</enabled></snapshots>
-		</repository>	
+		</repository>
+	
+	<!--  added for Amazon S3 -->
+	<repository>
+			<id>repository.atlassian.com</id>
+			<name>Atlassian Maven Repository</name>
+			<url>http://repository.atlassian.com/maven2</url>
+			<snapshots><enabled>false</enabled></snapshots>
+		</repository>	 
   </repositories>
   
   <distributionManagement>
