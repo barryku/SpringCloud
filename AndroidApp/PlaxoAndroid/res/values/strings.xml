@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="userName">jdoex@yahoo.com</string>
+    <string name="app_name">Plaxo Quick Search</string>
+<string name="password">secret</string>
+<string name="plaxoUrl">http://www.plaxo.com/pdata/contacts/@me/@all?filterBy=displayName&amp;filterOp=contains&amp;fields=displayName%2CphoneNumbers&amp;count=20&amp;sortBy=displayName&amp;sortOrder=ascending&amp;filterValue=</string>
+</resources>
