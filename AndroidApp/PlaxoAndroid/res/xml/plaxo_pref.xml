@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+  
+   <EditTextPreference
+                android:name="plaxoUserName"
+                android:summary="@string/pref_enter_user_name"
+                android:defaultValue="@string/userName"
+                android:title="User Name"
+                android:singleLine="true"
+                android:key="userName" />
+                
+	<EditTextPreference
+                android:name="plaxoPassword"
+                android:summary="@string/pref_enter_password"
+                android:title="Password"
+                android:defaultValue="@string/password"
+                android:password="true"
+                android:singleLine="true"
+                android:key="password" />  	                 
+	  
+</PreferenceScreen>
