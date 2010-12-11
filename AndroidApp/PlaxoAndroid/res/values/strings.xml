@@ -7,4 +7,7 @@
     <string name="pref_enter_password">Enter your Plaxo account password.</string>
 <string name="password">secret</string>
 <string name="plaxoUrl">http://www.plaxo.com/pdata/contacts/@me/@all?filterBy=displayName&amp;filterOp=contains&amp;fields=displayName%2CphoneNumbers&amp;count=20&amp;sortBy=displayName&amp;sortOrder=ascending&amp;filterValue=</string>
+<string name="msg_noRecord">no record found</string>
+<string name="msg_authFailed">invalid Plaxo user name/password</string>
+<string name="msg_searchFailed">search failed</string>
 </resources>

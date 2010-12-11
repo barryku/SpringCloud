@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.util.TypedValue;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -28,7 +29,11 @@ public class PlaxoSearch extends Activity {
 	public String getPassword() {
 		return password;
 	}
-
+	
+	public String getStringMsg(int resId) {
+		return getString(resId);
+	}
+	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 	    MenuInflater inflater = getMenuInflater();
@@ -47,13 +52,13 @@ public class PlaxoSearch extends Activity {
 	    return super.onOptionsItemSelected(item);
 	}
 	
-	private static float textSize;
+	private static float TEXT_NORMAL_SIZE = 14;
+	private static float TEXT_ZOOM_SIZE = 19;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
         final TextView result = (TextView) findViewById(R.id.result);
-        textSize = result.getTextSize();
         	
         Button searchBtn = (Button) findViewById(R.id.searchBtn);        
         searchBtn.setOnClickListener(new OnClickListener() {			
@@ -65,13 +70,16 @@ public class PlaxoSearch extends Activity {
         
         
         Button zoomBtn = (Button) findViewById(R.id.zoomBtn);        
-        zoomBtn.setOnClickListener(new OnClickListener() {			
+        zoomBtn.setOnClickListener(new OnClickListener() {
+        	float currentSize = TEXT_NORMAL_SIZE;
 			@Override
 			public void onClick(View v) {
-				if (result.getTextSize() == textSize) {
-					result.setTextSize(textSize + 5);
+				if (currentSize == TEXT_NORMAL_SIZE) {
+					result.setTextSize(TypedValue.COMPLEX_UNIT_DIP, TEXT_ZOOM_SIZE);
+					currentSize = TEXT_ZOOM_SIZE;
 				} else {
-					result.setTextSize(textSize);
+					result.setTextSize(TypedValue.COMPLEX_UNIT_DIP, TEXT_NORMAL_SIZE);
+					currentSize = TEXT_NORMAL_SIZE;
 				}
 			}
 		});
@@ -93,8 +101,8 @@ public class PlaxoSearch extends Activity {
     
     private void performSearch() {
     	SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-    	userName = prefs.getString("userName", null);
-    	password = prefs.getString("password", null);
+    	userName = prefs.getString("userName", getString(R.string.userName));
+    	password = prefs.getString("password", getString(R.string.password));
     	TextView result = (TextView) findViewById(R.id.result);
     	result.setText("\nsearching, please wait...");
     	EditText searchText = (EditText) findViewById(R.id.searchText);

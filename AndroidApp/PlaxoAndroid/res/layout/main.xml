@@ -26,6 +26,7 @@
     <TextView android:id="@+id/result"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
+    android:textSize="14dp"
     android:layout_below="@id/searchText"/>
 
 </RelativeLayout> 
