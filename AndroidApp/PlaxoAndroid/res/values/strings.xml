@@ -10,4 +10,5 @@
 <string name="msg_noRecord">no record found</string>
 <string name="msg_authFailed">invalid Plaxo user name/password</string>
 <string name="msg_searchFailed">search failed</string>
+<string name="msg_searching">searching, please wait...</string>
 </resources>

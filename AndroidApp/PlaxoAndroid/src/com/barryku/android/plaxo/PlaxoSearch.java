@@ -104,7 +104,7 @@ public class PlaxoSearch extends Activity {
     	userName = prefs.getString("userName", getString(R.string.userName));
     	password = prefs.getString("password", getString(R.string.password));
     	TextView result = (TextView) findViewById(R.id.result);
-    	result.setText("\nsearching, please wait...");
+    	result.setText("\n" + getString(R.string.msg_searching));
     	EditText searchText = (EditText) findViewById(R.id.searchText);
 		ContactSearcher searcher = new ContactSearcher(parent);
 		searcher.execute(searchText.getText().toString());

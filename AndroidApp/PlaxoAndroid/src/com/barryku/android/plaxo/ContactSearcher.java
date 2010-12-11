@@ -15,8 +15,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.text.Html;
+import android.text.method.LinkMovementMethod;
 import android.text.util.Linkify;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -57,6 +59,7 @@ public class ContactSearcher extends AsyncTask<String, Void, String> {
 		return result;
 	}
 	
+	private static String PHONE_ICON = "phone.png";
 	@Override
 	protected void onPostExecute(String result) {
 		StringBuffer htmlResult = new StringBuffer("<br>");
@@ -74,7 +77,9 @@ public class ContactSearcher extends AsyncTask<String, Void, String> {
 						if (phones.size() > 0) {
 							for (Phone phone:phones) {
 								htmlResult.append(phone.getType()).append(": ").
-									append(phone.getNumber()).append("<br>");
+									append(phone.getNumber()).append(" <a href=\"tel:").append(
+											phone.getNumber()).append("\"><img src=\"").append(
+											PHONE_ICON).append("\"/></a><br>");
 							}
 						}
 						htmlResult.append("<br>");
@@ -85,8 +90,20 @@ public class ContactSearcher extends AsyncTask<String, Void, String> {
 			}
 		}
 		TextView resultView = (TextView) parent.findViewById(R.id.result);
-		resultView.setText(Html.fromHtml(htmlResult.toString()));
-		Linkify.addLinks(resultView, Linkify.EMAIL_ADDRESSES | Linkify.PHONE_NUMBERS);
+		resultView.setText(Html.fromHtml(htmlResult.toString(),new Html.ImageGetter() {
+			
+			@Override
+			public Drawable getDrawable(String imgSrc) {
+				int id = R.drawable.noutfound;
+				if (PHONE_ICON.equals(imgSrc)) {
+					id = R.drawable.phone;					
+				} 				
+				Drawable img = parent.getResources().getDrawable(id);
+				img.setBounds(0,0,img.getIntrinsicWidth(),img.getIntrinsicHeight());
+				return img;					
+			}
+		},null));
+		resultView.setMovementMethod(LinkMovementMethod.getInstance());
 	}	
 
 			
