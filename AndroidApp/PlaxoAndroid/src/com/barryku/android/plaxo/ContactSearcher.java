@@ -16,7 +16,6 @@ import org.json.JSONObject;
 
 import android.os.AsyncTask;
 import android.text.Html;
-import android.text.method.LinkMovementMethod;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -77,8 +76,7 @@ public class ContactSearcher extends AsyncTask<String, Void, String> {
 		}
 		
 		TextView resultView = (TextView) parent.findViewById(R.id.result);
-		resultView.setText(Html.fromHtml(htmlResult.toString()));
-		resultView.setMovementMethod(LinkMovementMethod.getInstance());
+		resultView.setText(Html.fromHtml(htmlResult.toString()));		
 	}	
 
 			

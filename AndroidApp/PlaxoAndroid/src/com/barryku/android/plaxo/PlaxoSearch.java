@@ -11,6 +11,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.text.Html;
+import android.text.method.LinkMovementMethod;
 import android.util.TypedValue;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -51,26 +52,17 @@ public class PlaxoSearch extends Activity {
 	
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+		
 	    switch (item.getItemId()) {
 		    case R.id.preference:
 		    	Intent pref = new Intent(getBaseContext(), PlaxoPreference.class);
 		    	startActivity(pref);
 		    	break;
 		    case R.id.history:
-		    	TextView result = (TextView) findViewById(R.id.result);
-		    	int historyCount = prefs.getInt(HISTORY_COUNT, 0);
-		    	if (historyCount > 0) {
-		    		Contact[] contacts = new Contact[historyCount];
-		    		for (int i=0; i<historyCount; i++) {
-		    			contacts[i] = getContactFromPhoneUri(prefs.getString(HISTORY_PREFIX + (i+1), ""));
-		    		}
-		    		result.setText(Html.fromHtml("<br>" + getContactHtml(contacts)));
-		    	} else {
-		    		result.setText(Html.fromHtml("<br>" +getString(R.string.msg_noRecord)));
-		    	}
+		    	displayHistory();
 		    	break;
 		    case R.id.lastSearch:
+		    	SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
 		    	String searchTerm = prefs.getString(HISTORY_SEARCH, "");
 		    	EditText searchText = (EditText) findViewById(R.id.searchText);
 		    	searchText.setText(searchTerm);
@@ -80,6 +72,20 @@ public class PlaxoSearch extends Activity {
 	    return super.onOptionsItemSelected(item);
 	}
 	
+	private void displayHistory(){
+		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+		TextView result = (TextView) findViewById(R.id.result);
+    	int historyCount = prefs.getInt(HISTORY_COUNT, 0);
+    	if (historyCount > 0) {
+    		Contact[] contacts = new Contact[historyCount];
+    		for (int i=0; i<historyCount; i++) {
+    			contacts[i] = getContactFromPhoneUri(prefs.getString(HISTORY_PREFIX + (i+1), ""));
+    		}
+    		result.setText(Html.fromHtml("<br>" + getContactHtml(contacts)));
+    	} else {
+    		result.setText(Html.fromHtml("<br>" +getString(R.string.msg_noRecord)));
+    	}
+	}
 	public String getContactHtml(Contact[] contacts) {
 		StringBuffer htmlResult = new StringBuffer();
 		for (int i=0; i<contacts.length; i++) {
@@ -124,10 +130,10 @@ public class PlaxoSearch extends Activity {
 				}
 			}
 			SharedPreferences.Editor editor = prefs.edit();
-			int index = 0;
+			historyCount = 0;
 			for (String history:histories) {
-				index++;
-				editor.putString(HISTORY_PREFIX + index, history);
+				historyCount++;
+				editor.putString(HISTORY_PREFIX + historyCount, history);
 			}			
 			editor.putInt(HISTORY_COUNT, historyCount);
 			editor.commit();
@@ -140,9 +146,11 @@ public class PlaxoSearch extends Activity {
 	private Contact getContactFromPhoneUri(String phoneUri) {
 		Contact contact = new Contact();
 		StringTokenizer st = new StringTokenizer(phoneUri, FIELD_SEPARATOR);
-		contact.setName(st.nextToken());
-		Phone phone = new Phone(st.nextToken(),st.nextToken());
-		contact.addPhone(phone);
+		if (st.countTokens() >= 3) {
+			contact.setName(st.nextToken());
+			Phone phone = new Phone(st.nextToken(),st.nextToken());
+			contact.addPhone(phone);
+		}
 		return contact;
 	}
 	
@@ -154,7 +162,8 @@ public class PlaxoSearch extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
         final TextView result = (TextView) findViewById(R.id.result);
-        	
+        result.setMovementMethod(LinkMovementMethod.getInstance());
+        displayHistory();	
         Button searchBtn = (Button) findViewById(R.id.searchBtn);        
         searchBtn.setOnClickListener(new OnClickListener() {			
 			@Override
