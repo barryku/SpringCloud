@@ -2,7 +2,6 @@ package com.barryku.android.plaxo;
 
 import java.io.IOException;
 import java.net.URLEncoder;
-import java.util.List;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.auth.AuthScope;
@@ -15,7 +14,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
@@ -59,7 +57,6 @@ public class ContactSearcher extends AsyncTask<String, Void, String> {
 		return result;
 	}
 	
-	private static final String PHONE_ICON = "phone.png";	
 
 	@Override
 	protected void onPostExecute(String result) {
@@ -80,19 +77,7 @@ public class ContactSearcher extends AsyncTask<String, Void, String> {
 		}
 		
 		TextView resultView = (TextView) parent.findViewById(R.id.result);
-		resultView.setText(Html.fromHtml(htmlResult.toString(),new Html.ImageGetter() {
-			
-			@Override
-			public Drawable getDrawable(String imgSrc) {
-				int id = R.drawable.noutfound;
-				if (PHONE_ICON.equals(imgSrc)) {
-					id = R.drawable.phone;					
-				} 				
-				Drawable img = parent.getResources().getDrawable(id);
-				img.setBounds(0,0,img.getIntrinsicWidth(),img.getIntrinsicHeight());
-				return img;					
-			}
-		},null));
+		resultView.setText(Html.fromHtml(htmlResult.toString()));
 		resultView.setMovementMethod(LinkMovementMethod.getInstance());
 	}	
 
