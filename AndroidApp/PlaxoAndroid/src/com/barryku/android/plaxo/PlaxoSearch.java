@@ -1,10 +1,15 @@
 package com.barryku.android.plaxo;
 
+import java.util.List;
+import java.util.StringTokenizer;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.text.Html;
 import android.util.TypedValue;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -18,9 +23,11 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 public class PlaxoSearch extends Activity {
+	public static String CUSTOM_SCHEME;
+	public static final String FIELD_SEPARATOR = "~~";
 	private final PlaxoSearch parent = this;
 	private String userName;
-	private String password;
+	private String password;	
 	
 	public String getUserName() {
 		return userName;
@@ -43,19 +50,96 @@ public class PlaxoSearch extends Activity {
 	
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
+		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
 	    switch (item.getItemId()) {
-	    case R.id.preference:
-	    	Intent pref = new Intent(getBaseContext(), PlaxoPreference.class);
-	    	startActivity(pref);
-	    	break;
+		    case R.id.preference:
+		    	Intent pref = new Intent(getBaseContext(), PlaxoPreference.class);
+		    	startActivity(pref);
+		    	break;
+		    case R.id.history:
+		    	TextView result = (TextView) findViewById(R.id.result);
+		    	int historyCount = prefs.getInt(HISTORY_COUNT, 0);
+		    	if (historyCount > 0) {
+		    		Contact[] contacts = new Contact[historyCount];
+		    		for (int i=0; i<historyCount; i++) {
+		    			contacts[i] = getContactFromPhoneUri(prefs.getString(HISTORY_PREFIX + (i+1), ""));
+		    		}
+		    		result.setText(Html.fromHtml("<br>" + getContactHtml(contacts)));
+		    	} else {
+		    		result.setText(Html.fromHtml("<br>" +getString(R.string.msg_noRecord)));
+		    	}
+		    	break;
+		    case R.id.lastSearch:
+		    	String searchTerm = prefs.getString(HISTORY_SEARCH, "");
+		    	EditText searchText = (EditText) findViewById(R.id.searchText);
+		    	searchText.setText(searchTerm);
+		    	performSearch(searchTerm);
+		    	break;
 	    }
 	    return super.onOptionsItemSelected(item);
+	}
+	
+	public String getContactHtml(Contact[] contacts) {
+		StringBuffer htmlResult = new StringBuffer();
+		for (int i=0; i<contacts.length; i++) {
+			String contactName = contacts[i].getName();
+			htmlResult.append("<b>").append(contactName).append("</b><br>");
+			List<Phone> phones = contacts[i].getPhones();
+			if (phones.size() > 0) {
+				for (Phone phone:phones) {
+					String phoneUri = contactName + FIELD_SEPARATOR + phone.getType() + 
+						FIELD_SEPARATOR + phone.getNumber();
+					htmlResult.append(phone.getType()).append(": ").append(
+							"<a href=\"").append(CUSTOM_SCHEME).append("://").append(
+							phoneUri).append("\">").append(
+							phone.getNumber()).append("</a><br/>");
+				}
+			}
+			htmlResult.append("<br>");
+		}
+		return htmlResult.toString();
+	}
+	
+	private static final int MAX_HISTORY = 10;
+	private static final String HISTORY_COUNT = "historyCount";
+	private static final String HISTORY_PREFIX = "history_";
+	@Override	
+	protected void onNewIntent(Intent intent) {
+		super.onNewIntent(intent);
+		Uri uri = intent.getData();
+		String phoneUri = uri.toString().substring((CUSTOM_SCHEME + "://").length());
+		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+		int historyCount = prefs.getInt(HISTORY_COUNT, 0);
+		SharedPreferences.Editor editor = prefs.edit();
+		historyCount = historyCount < MAX_HISTORY ? historyCount+1 : MAX_HISTORY;
+		if (historyCount > 1) {
+			for (int i=historyCount; i>1; i--) {
+				editor.putString(HISTORY_PREFIX + i, prefs.getString(HISTORY_PREFIX + (i -1),""));
+			}
+		}
+		editor.putString(HISTORY_PREFIX + 1, phoneUri);
+		editor.putInt(HISTORY_COUNT, historyCount);
+		editor.commit();
+		
+		Contact contact = getContactFromPhoneUri(phoneUri);
+		intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + contact.getPhones().get(0).getNumber()));
+		startActivity(intent);
+	}
+	
+	private Contact getContactFromPhoneUri(String phoneUri) {
+		Contact contact = new Contact();
+		StringTokenizer st = new StringTokenizer(phoneUri, FIELD_SEPARATOR);
+		contact.setName(st.nextToken());
+		Phone phone = new Phone(st.nextToken(),st.nextToken());
+		contact.addPhone(phone);
+		return contact;
 	}
 	
 	private static float TEXT_NORMAL_SIZE = 14;
 	private static float TEXT_ZOOM_SIZE = 19;
     @Override
     public void onCreate(Bundle savedInstanceState) {
+    	CUSTOM_SCHEME = getString(R.string.custom_scheme_tel);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
         final TextView result = (TextView) findViewById(R.id.result);
@@ -64,7 +148,9 @@ public class PlaxoSearch extends Activity {
         searchBtn.setOnClickListener(new OnClickListener() {			
 			@Override
 			public void onClick(View v) {
-				performSearch();				
+				EditText searchText = (EditText) findViewById(R.id.searchText);
+		    	String searchTerm = searchText.getText().toString();
+				performSearch(searchTerm);				
 			}
 		});
         
@@ -90,7 +176,9 @@ public class PlaxoSearch extends Activity {
 			public boolean onKey(View v, int keyCode, KeyEvent event) {
                 if ((event.getAction() == KeyEvent.ACTION_DOWN) &&
                     (keyCode == KeyEvent.KEYCODE_ENTER)) {
-                  performSearch();
+                	EditText searchText = (EditText) findViewById(R.id.searchText);
+                	String searchTerm = searchText.getText().toString();
+                	performSearch(searchTerm);
                   return true;
                 }
                 return false;
@@ -98,15 +186,17 @@ public class PlaxoSearch extends Activity {
         });  
         
     }
-    
-    private void performSearch() {
+    private static final String HISTORY_SEARCH = "historySearch";
+    private void performSearch(String searchTerm) {
     	SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
     	userName = prefs.getString("userName", getString(R.string.userName));
     	password = prefs.getString("password", getString(R.string.password));
     	TextView result = (TextView) findViewById(R.id.result);
-    	result.setText("\n" + getString(R.string.msg_searching));
-    	EditText searchText = (EditText) findViewById(R.id.searchText);
+    	result.setText("\n" + getString(R.string.msg_searching));    	
+    	SharedPreferences.Editor editor = prefs.edit();
+    	editor.putString(HISTORY_SEARCH, searchTerm);
+    	editor.commit();
 		ContactSearcher searcher = new ContactSearcher(parent);
-		searcher.execute(searchText.getText().toString());
-    }
+		searcher.execute(searchTerm);
+    }    
 }

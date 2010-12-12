@@ -2,7 +2,9 @@
 <resources>
     <string name="userName">jdoex@yahoo.com</string>
     <string name="app_name">Plaxo Search</string>
-    <string name="preferences">Preferences</string>
+    <string name="menu_preferences">Preferences</string>
+    <string name="menu_history">History</string>
+    <string name="menu_lastSearch">Last Search</string>
     <string name="pref_enter_user_name">Enter your Plaxo account name.</string>
     <string name="pref_enter_password">Enter your Plaxo account password.</string>
 <string name="password">secret</string>
@@ -11,4 +13,5 @@
 <string name="msg_authFailed">invalid Plaxo user name/password</string>
 <string name="msg_searchFailed">search failed</string>
 <string name="msg_searching">searching, please wait...</string>
+<string name="custom_scheme_tel">barryku.tel</string>
 </resources>

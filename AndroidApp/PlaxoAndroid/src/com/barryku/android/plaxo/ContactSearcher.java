@@ -19,13 +19,13 @@ import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
-import android.text.util.Linkify;
 import android.widget.TextView;
 import android.widget.Toast;
 
 public class ContactSearcher extends AsyncTask<String, Void, String> {
 	
 	private PlaxoSearch parent;
+	
 	public ContactSearcher(PlaxoSearch parent) {
 		super();
 		this.parent = parent;
@@ -59,7 +59,8 @@ public class ContactSearcher extends AsyncTask<String, Void, String> {
 		return result;
 	}
 	
-	private static String PHONE_ICON = "phone.png";
+	private static final String PHONE_ICON = "phone.png";	
+
 	@Override
 	protected void onPostExecute(String result) {
 		StringBuffer htmlResult = new StringBuffer("<br>");
@@ -71,24 +72,13 @@ public class ContactSearcher extends AsyncTask<String, Void, String> {
 			} else {
 				Contact[] contacts = getContacts(result);
 				if (contacts != null) {
-					for (int i=0; i<contacts.length; i++) {
-						htmlResult.append("<b>").append(contacts[i].getName()).append("</b><br>");
-						List<Phone> phones = contacts[i].getPhones();
-						if (phones.size() > 0) {
-							for (Phone phone:phones) {
-								htmlResult.append(phone.getType()).append(": ").
-									append(phone.getNumber()).append(" <a href=\"tel:").append(
-											phone.getNumber()).append("\"><img src=\"").append(
-											PHONE_ICON).append("\"/></a><br>");
-							}
-						}
-						htmlResult.append("<br>");
-					}				
+					htmlResult.append(parent.getContactHtml(contacts));	
 				} else {
 					htmlResult.append(parent.getString(R.string.msg_noRecord));
 				}
 			}
 		}
+		
 		TextView resultView = (TextView) parent.findViewById(R.id.result);
 		resultView.setText(Html.fromHtml(htmlResult.toString(),new Html.ImageGetter() {
 			

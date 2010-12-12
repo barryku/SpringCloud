@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:id="@+id/preference"
-          android:icon="@drawable/icon_pref" android:title="@string/preferences"/>
+	<item android:id="@+id/lastSearch"
+          android:icon="@drawable/icon_retry" android:title="@string/menu_lastSearch"/>
+    
+	<item android:id="@+id/history"
+          android:icon="@drawable/icon_history" android:title="@string/menu_history"/>
+          
+	<item android:id="@+id/preference"
+          android:icon="@drawable/icon_pref" android:title="@string/menu_preferences"/>        
 </menu>
