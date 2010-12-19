@@ -31,4 +31,14 @@
 	
 	<bean id="googleAppRepositoryService" class="com.barryku.gae.service.impl.RepositoryGoogleAppImpl"/>
 
+
+<!-- Twilio settings -->
+	<bean id="twilioSmsConfig" class="com.barryku.gae.controller.helper.TwilioSmsConfig">
+		<property name="restUrl" value="${twilio.restUrl}/${twilio.sid}/SMS/Messages"/>
+		<property name="fromNumber" value="${twilio.fromNumber}"/>
+		<property name="sid" value="${twilio.sid}"/>
+		<property name="authToken" value ="${twilio.authToken}"/>
+	</bean>
+	
+
 </beans>
