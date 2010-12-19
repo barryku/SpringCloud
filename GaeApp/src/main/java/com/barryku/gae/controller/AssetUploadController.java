@@ -29,7 +29,7 @@ public class AssetUploadController {
 	@RequestMapping(method = RequestMethod.POST)
 	public String handleUpload(
 			@RequestParam("assetFile") MultipartFile assetFile) throws IOException{
-		if (assetFile != null) {			
+		if (assetFile != null) {
 			repositoryService.putAsset(ASSET_PATH, assetFile.getOriginalFilename(), new ByteArrayInputStream(assetFile.getBytes()));
 		}
 		return "uploadComplete";

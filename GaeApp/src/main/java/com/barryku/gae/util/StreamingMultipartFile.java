@@ -40,7 +40,7 @@ public class StreamingMultipartFile implements MultipartFile {
     }
 
     public String getOriginalFilename() {
-        return item.getFieldName();
+        return getName();
     }
 
     public String getContentType() {
@@ -50,7 +50,7 @@ public class StreamingMultipartFile implements MultipartFile {
     public boolean isEmpty() {
         return false; // TODO
     }
-
+    
     public long getSize() {
         if (size > 0) {
             try {

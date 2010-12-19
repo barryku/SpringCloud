@@ -17,6 +17,7 @@ import org.springframework.util.StringUtils;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 import java.util.HashMap;
+import java.util.logging.Logger;
 import java.io.InputStream;
 import java.io.IOException;
 
@@ -42,6 +43,7 @@ public class StreamingMultipartResolver implements MultipartResolver {
         return ServletFileUpload.isMultipartContent(request);
     }
 
+    private static Logger log = Logger.getLogger(StreamingMultipartResolver.class.getName());
     public MultipartHttpServletRequest resolveMultipart(HttpServletRequest request) throws MultipartException {
 
         // Create a new file upload handler
@@ -59,9 +61,9 @@ public class StreamingMultipartResolver implements MultipartResolver {
             while (iter.hasNext()) {
                 FileItemStream item = iter.next();
                 String name = item.getFieldName();
+                String fileName = item.getName();
                 InputStream stream = item.openStream();
                 if (item.isFormField()) {
-
                     String value = Streams.asString(stream, encoding);
 
                     String[] curParam = multipartParameters.get(name);
@@ -78,6 +80,7 @@ public class StreamingMultipartResolver implements MultipartResolver {
                 } else {
 
                     // Process the input stream
+                	log.info("........item name: " + fileName);
                     MultipartFile file = new StreamingMultipartFile(item);
                     multipartFiles.add(name, file);
                 }
