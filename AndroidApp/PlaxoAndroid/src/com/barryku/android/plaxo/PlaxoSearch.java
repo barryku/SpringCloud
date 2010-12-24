@@ -114,33 +114,35 @@ public class PlaxoSearch extends Activity {
 	protected void onNewIntent(Intent intent) {
 		super.onNewIntent(intent);
 		Uri uri = intent.getData();
-		String phoneUri = uri.toString().substring((CUSTOM_SCHEME + "://").length());
-		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-		int historyCount = prefs.getInt(HISTORY_COUNT, 0);
-		String history1 = prefs.getString(HISTORY_PREFIX + 1, "");
-		if (!history1.equals(phoneUri)) {
-			List<String> histories = new ArrayList<String>();
-			histories.add(phoneUri);
-			historyCount = historyCount < MAX_HISTORY ? historyCount+1 : MAX_HISTORY;
-			if (historyCount > 1) {
-				for (int i=1; i<historyCount; i++) {
-					if (!prefs.getString(HISTORY_PREFIX + i,"").equals(phoneUri)) {
-						histories.add(prefs.getString(HISTORY_PREFIX + i,""));
+		if (uri != null && uri.toString().indexOf(CUSTOM_SCHEME)>-1) {
+			String phoneUri = uri.toString().substring((CUSTOM_SCHEME + "://").length());
+			SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+			int historyCount = prefs.getInt(HISTORY_COUNT, 0);
+			String history1 = prefs.getString(HISTORY_PREFIX + 1, "");
+			if (!history1.equals(phoneUri)) {
+				List<String> histories = new ArrayList<String>();
+				histories.add(phoneUri);
+				historyCount = historyCount < MAX_HISTORY ? historyCount+1 : MAX_HISTORY;
+				if (historyCount > 1) {
+					for (int i=1; i<historyCount; i++) {
+						if (!prefs.getString(HISTORY_PREFIX + i,"").equals(phoneUri)) {
+							histories.add(prefs.getString(HISTORY_PREFIX + i,""));
+						}
 					}
 				}
+				SharedPreferences.Editor editor = prefs.edit();
+				historyCount = 0;
+				for (String history:histories) {
+					historyCount++;
+					editor.putString(HISTORY_PREFIX + historyCount, history);
+				}			
+				editor.putInt(HISTORY_COUNT, historyCount);
+				editor.commit();
 			}
-			SharedPreferences.Editor editor = prefs.edit();
-			historyCount = 0;
-			for (String history:histories) {
-				historyCount++;
-				editor.putString(HISTORY_PREFIX + historyCount, history);
-			}			
-			editor.putInt(HISTORY_COUNT, historyCount);
-			editor.commit();
+			Contact contact = getContactFromPhoneUri(phoneUri);
+			intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + contact.getPhones().get(0).getNumber()));
+			startActivity(intent);
 		}
-		Contact contact = getContactFromPhoneUri(phoneUri);
-		intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + contact.getPhones().get(0).getNumber()));
-		startActivity(intent);
 	}
 	
 	private Contact getContactFromPhoneUri(String phoneUri) {

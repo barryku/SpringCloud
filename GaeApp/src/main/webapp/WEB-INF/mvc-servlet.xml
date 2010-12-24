@@ -39,6 +39,21 @@
 		<property name="sid" value="${twilio.sid}"/>
 		<property name="authToken" value ="${twilio.authToken}"/>
 	</bean>
-	
+
+<!-- Amazon SNS -->	
+	<bean id="amazonSns" class="com.barryku.gae.service.AmazonSnsService">
+	  
+		<constructor-arg>
+			<bean class="com.amazonaws.services.sns.AmazonSNSClient">
+				<constructor-arg>
+					<bean class="com.amazonaws.auth.BasicAWSCredentials">
+						<constructor-arg value="${amazon.accessKey}"/>
+						<constructor-arg value="${amazon.accessSecret}"/>
+					</bean>
+				</constructor-arg>
+			</bean>
+		</constructor-arg>
+		<property name="topicArn" value="${amazon.topicArn}"/>	
+	</bean>  
 
 </beans>

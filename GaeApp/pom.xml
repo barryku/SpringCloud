@@ -20,6 +20,15 @@
 		<gae.application.version>test</gae.application.version>
 	</properties>
 
+  <repositories>	
+	<!--  added for Amazon S3 -->  
+	<repository>
+			<id>repository.atlassian.com</id>
+			<name>Atlassian Maven Repository</name>
+			<url>http://repository.atlassian.com/maven2</url>
+		</repository>	 
+  </repositories>
+  
 	<pluginRepositories>
 		<pluginRepository>
 			<id>maven-gae-plugin-repo</id>
@@ -166,20 +175,14 @@
 			<version>1.1</version>
 		</dependency>
 
-<!-- 
-		<dependency>
-			<groupId>javax.jdo</groupId>
-			<artifactId>jdo2-api</artifactId>
-			<version>2.3-eb</version>
-			<exclusions>
-				<exclusion>
-					<groupId>javax.transaction</groupId>
-					<artifactId>transaction-api</artifactId>
-				</exclusion>
-			</exclusions>
-		</dependency>
--->
-
+         <dependency>
+        	<groupId>com.amazonaws</groupId>
+        	<artifactId>aws-java-sdk</artifactId>
+        	<version>1.1.1</version>
+        	<type>jar</type>
+        	<scope>compile</scope>
+        </dependency> 
+        
 		<dependency>
 			<groupId>javax.transaction</groupId>
 			<artifactId>jta</artifactId>

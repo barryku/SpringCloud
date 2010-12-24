@@ -1,7 +1,6 @@
 package com.barryku.gae.controller;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
 
@@ -14,10 +13,11 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.SessionAttributes;
-import org.springframework.web.client.RestTemplate;
 
 import com.barryku.gae.controller.helper.TwilioSmsConfig;
 import com.barryku.gae.model.SmsText;
+import com.barryku.gae.model.TwilioCallback;
+import com.barryku.gae.service.AmazonSnsService;
 import com.google.appengine.api.urlfetch.HTTPHeader;
 import com.google.appengine.api.urlfetch.HTTPMethod;
 import com.google.appengine.api.urlfetch.HTTPRequest;
@@ -27,7 +27,6 @@ import com.google.appengine.api.urlfetch.URLFetchServiceFactory;
 import com.google.appengine.repackaged.com.google.common.util.Base64;
 
 @Controller
-@RequestMapping("/sms")
 @SessionAttributes("sms")
 public class SmsController {
 	private static Log log = LogFactory.getLog(SmsController.class);
@@ -35,7 +34,10 @@ public class SmsController {
 	@Autowired
 	private TwilioSmsConfig twilioConfig;
 	
-	@RequestMapping(method = RequestMethod.GET)
+	@Autowired
+	private AmazonSnsService amazonSns;
+	
+	@RequestMapping(value="/sms", method = RequestMethod.GET)
 	public String setupForm(Model model){
 		SmsText sms = new SmsText();
 		sms.setFrom(twilioConfig.getFromNumber());
@@ -43,10 +45,9 @@ public class SmsController {
 		return "smsForm";
 	}
 	
-	@Autowired
-	protected RestTemplate restTemplate;
+
 	
-	@RequestMapping(method = RequestMethod.POST)
+	@RequestMapping(value = "/sms", method = RequestMethod.POST)
 	public String sendSms(@ModelAttribute("sms") SmsText sms) throws IOException  {
 		URL url = new URL(twilioConfig.getRestUrl());
 		HTTPRequest request = new HTTPRequest(url, HTTPMethod.POST);
@@ -63,5 +64,12 @@ public class SmsController {
 		
 		return "smsComplete";
 	}	
-
+	
+	
+	@RequestMapping(value="/twilio", method = RequestMethod.POST)
+	public String processCallback(@ModelAttribute("twilio") TwilioCallback msg) throws IOException  {
+		String msgId = amazonSns.sendTwilioMessage(msg);
+		log.info("SNS ID: " + msgId);
+		return null;
+	}
 }
