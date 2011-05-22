@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="hello">Click the button below to log into Box.net.</string>
+    <string name="app_name">Box.net</string>
+    <string name="api_key">yourApiKeyHere</string>
+    <string name="request_uri">https://www.box.net/api/1.0/rest?action=get_ticket&amp;api_key={api_key}</string>
+    <string name="auth_uri">https://m.box.net/api/1.0/auth/</string>
+    <string name="rest_uri">https://www.box.net/api/1.0/rest?api_key={api_key}&amp;auth_token={auth_token}&amp;action=</string>
+    <string name="logout_uri">https://www.box.net/api/1.0/rest?action=logout&amp;api_key={api_key}&amp;auth_token={auth_token}</string>
+</resources>
