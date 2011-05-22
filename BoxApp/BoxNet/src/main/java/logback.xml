@@ -1,0 +1,25 @@
+<configuration>
+  <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+      <!-- daily rollover -->
+      <fileNamePattern>logs/app_%d{MM_dd_yyyy}.log</fileNamePattern>
+      <!-- keep 365 days' worth of history -->
+      <maxHistory>365</maxHistory>
+    </rollingPolicy>
+
+    <encoder>
+      <pattern>%d{HH:mm:ss} %-5level [%-30logger{30}] %msg%n%caller{5}</pattern>
+    </encoder>
+  </appender>
+  <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+      <encoder>
+      <pattern>%d{HH:mm:ss} %-5level [%-30logger{30}] %msg%n</pattern>
+    </encoder>
+  </appender>
+  <root level="debug">
+    <appender-ref ref="CONSOLE" />    
+  	<appender-ref ref="FILE" />
+  </root>
+ <!-- suppress springframework's debug messges  -->
+ <logger name="org.springframework" level="info"/>
+</configuration>
