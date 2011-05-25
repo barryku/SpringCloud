@@ -15,15 +15,7 @@
  */
 package com.barryku.android.boxnet;
 
-import static com.barryku.android.boxnet.Constants.AUTH_INTENT_BROWSE;
-import static com.barryku.android.boxnet.Constants.AUTH_INTENT_SCHEME;
-import static com.barryku.android.boxnet.Constants.AUTH_TOKEN_KEY;
-import static com.barryku.android.boxnet.Constants.DOWNLOAD_URI;
-import static com.barryku.android.boxnet.Constants.IMG_FOLDER_URL;
-import static com.barryku.android.boxnet.Constants.IMG_HOME_URL;
-import static com.barryku.android.boxnet.Constants.LAST_VIEWED_FOLDER;
-import static com.barryku.android.boxnet.Constants.LOG_TAG;
-import static com.barryku.android.boxnet.Constants.STATUS_LISTING_OK;
+import static com.barryku.android.boxnet.Constants.*;
 
 import org.springframework.web.client.RestTemplate;
 
@@ -83,7 +75,8 @@ public class BrowseActivity extends Activity {
 	}
 	
 	private void loadFolder(String folderId) {		
-		String browseUri = AUTH_INTENT_SCHEME + "://" + AUTH_INTENT_BROWSE + "/";
+		String browseUri = BOX_INTENT_SCHEME + "://" + BOX_INTENT_BROWSE + "/";
+		String uploadUri = BOX_INTENT_SCHEME + "://" + BOX_INTENT_UPLOAD + "/";;
 		String downloadUri = DOWNLOAD_URI + authToken + "/";
 		String homeUrl = browseUri + 0;
 			
@@ -129,6 +122,9 @@ public class BrowseActivity extends Activity {
 				}
 			}
 			
+			sb.append("<br/><br/><a href=\"").append(uploadUri).append(folderId).append("\">")
+			.append("upload file ").append("<img src=\"").append(IMG_UPLOAD_URL).append("\"></a>");
+			
 			final WebView detailResult = (WebView) findViewById(R.id.browseView);
 	        detailResult.getSettings().setBuiltInZoomControls(true);
 	        detailResult.loadDataWithBaseURL("fake://notused", "<html><body>" + sb.toString() + 
@@ -143,6 +139,7 @@ public class BrowseActivity extends Activity {
 	    return true;
 	}
 	
+	
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
@@ -152,10 +149,11 @@ public class BrowseActivity extends Activity {
 	    	Log.d(LOG_TAG, "log out with status:" + response.getStatus());
 	    	clearPreferences(PreferenceManager.getDefaultSharedPreferences(this));
 	    	break;	
-    }
+
+		}
 		return super.onOptionsItemSelected(item);
 	}
-	
+
 	private void clearPreferences(SharedPreferences prefs) {
 		SharedPreferences.Editor editor = prefs.edit();
 		editor = prefs.edit();
