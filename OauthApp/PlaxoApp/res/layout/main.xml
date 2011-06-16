@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:orientation="vertical" android:layout_width="fill_parent"
+	android:layout_height="fill_parent">
+	<RelativeLayout android:layout_width="match_parent" android:visibility="invisible"
+		android:id="@+id/searchBar" android:layout_height="wrap_content">
+		<EditText android:id="@+id/searchText" android:layout_width="100dip"
+			android:layout_height="wrap_content" android:singleLine="true" />
+		<Button android:id="@+id/doSerarch" android:text="Search"
+			android:layout_width="wrap_content" android:layout_height="wrap_content"
+			android:layout_toRightOf="@id/searchText" />
+	</RelativeLayout>
+	<TextView android:text="TextView" android:id="@+id/result" android:layout_width="match_parent" android:layout_height="fill_parent"></TextView>
+	
+</LinearLayout>
