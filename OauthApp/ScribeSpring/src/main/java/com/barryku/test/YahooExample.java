@@ -8,14 +8,18 @@ import org.scribe.oauth.*;
 
 public class YahooExample 
 {
-  private static final String PROTECTED_RESOURCE_URL = "http://social.yahooapis.com/v1/user/%s/profile/status?format=json";
-
+  //private static final String PROTECTED_RESOURCE_URL = "http://social.yahooapis.com/v1/user/%s/profile/status?format=json";
+	private static final String API_KEY = "dj0yJmk9TDMyc0prOFlFb3NuJmQ9WVdrOWVXNXFVa3hpTnpZbWNHbzlNak00TmpnME1EWXkmcz1jb25zdW1lcnNlY3JldCZ4PWVl";
+	private static final String API_SECRET = "e8fb247893d0de0a72842be2ded4a57d58520ee6";
+	private static final String PROTECTED_RESOURCE_URL = "http://social.yahooapis.com/v1/user/%s/contacts;name.contains=michael?format=json";
   public static void main(String[] args)
   {
+	  
     OAuthService service = new ServiceBuilder()
                                 .provider(SpringYahooApi.class)
-                                .apiKey("dj0yJmk9TXZDWVpNVVdGaVFmJmQ9WVdrOWMweHZXbkZLTkhVbWNHbzlNVEl5TWprd05qUTJNZy0tJnM9Y29uc3VtZXJzZWNyZXQmeD0wMw--")
-                                .apiSecret("262be559f92a2be20c4c039419018f2b48cdfce9")
+                                .apiKey(API_KEY)
+                                .apiSecret(API_SECRET)
+                                .callback("http://oauth.cloudfoundry.com/auth?callback")
                                 .build();    
     
     Scanner in = new Scanner(System.in);

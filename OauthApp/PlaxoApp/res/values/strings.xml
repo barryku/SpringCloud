@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="hello">Hello World, PlaxoMainActivity!</string>
-    <string name="app_name">Plaxo App</string>
-    <string name="not_authorized">Please click menu to authorize this application to access your Plaxo data.</string>
-    <string name="oauth_scheme">myoauth</string>
+    <string name="app_name">OAuth App</string>
+    <string name="not_authorized">Please click menu to authorize this application to access your data.</string>
+    <string name="oauth_scheme">cloudcontact</string>
 </resources>

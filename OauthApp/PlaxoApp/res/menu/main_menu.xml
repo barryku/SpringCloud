@@ -2,6 +2,8 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 	<item android:id="@+id/authorize"
           android:icon="@drawable/icon_authorize" android:title="Authorize"/>
+<item android:id="@+id/scribe_auth"
+          android:title="via Scribe"/>          
 	<item android:id="@+id/logout"
           android:icon="@drawable/icon_logout" android:title="Log out"/>
 </menu>
