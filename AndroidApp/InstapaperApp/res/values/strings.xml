@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="hello">Hello World, InstapaperActivity!</string>
+    <string name="app_name">Instapaper Share</string>
+    <string name="instapaper_url">https://www.instapaper.com/api/add?username=%1$s&amp;password=%2$s&amp;url=%3$s</string>
+    <string name="menu_preferences">Preferences</string>
+    <string name="pref_username_title">User Name</string>
+    <string name="pref_username_prompt">Enter your Instapaper user name</string>
+    <string name="pref_password_title">Password</string>
+    <string name="pref_password_prompt">Enter your Instapaper password</string>
+    <string name="no_credential">In order to use this application, you have to set up your account first.  Please click menu, Preferences, to enter your Instapaper user name and password.</string>
+    <string name="in_progress">Adding URL link to Instapaper, please wait....</string>
+</resources>
