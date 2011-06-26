@@ -39,9 +39,9 @@ public class AuthActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        	
+        
         Intent intent = getIntent();        
-        if (AUTH_INTENT_SCHEME.equals(intent.getScheme())) {
+        if (BOX_INTENT_SCHEME.equals(intent.getScheme())) {
         	Uri uri = intent.getData();
         	Log.d(LOG_TAG, "processing auth callback: " + uri);
         	String authToken = uri.getQueryParameter("auth_token");
@@ -79,8 +79,7 @@ public class AuthActivity extends Activity {
         	forwardToBrowse();
         }
     }
-    
-    
+
     private void forwardToBrowse() {
     	Intent browseIntent = new Intent(this, BrowseActivity.class);
     	startActivity(browseIntent);

@@ -2,9 +2,9 @@
     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
     xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>com.barryku.android</groupId>
-    <artifactId>BoxNetApp</artifactId>
-    <name>BoxNetApp</name>
+    <groupId>com.barryku.android.plaxo</groupId>
+    <artifactId>PlaxoApp</artifactId>
+    <name>PlaxoApp</name>
     <packaging>apk</packaging>
     <version>1.0</version>
     
@@ -136,6 +136,7 @@
             <version>2.2.1</version>
             <scope>provided</scope>
         </dependency>
+
         <dependency>
             <groupId>org.springframework.android</groupId>
             <artifactId>spring-android-rest-template</artifactId>
@@ -151,6 +152,13 @@
         	<groupId>org.simpleframework</groupId>
         	<artifactId>simple-xml</artifactId>
         	<version>2.5.3</version>
+        	<type>jar</type>
+        	<scope>compile</scope>
+        </dependency>
+        <dependency>
+        	<groupId>org.scribe</groupId>
+        	<artifactId>scribe</artifactId>
+        	<version>1.2.0</version>
         	<type>jar</type>
         	<scope>compile</scope>
         </dependency>

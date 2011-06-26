@@ -7,4 +7,5 @@
     <string name="auth_uri">https://m.box.net/api/1.0/auth/</string>
     <string name="rest_uri">https://www.box.net/api/1.0/rest?api_key={api_key}&amp;auth_token={auth_token}&amp;action=</string>
     <string name="logout_uri">https://www.box.net/api/1.0/rest?action=logout&amp;api_key={api_key}&amp;auth_token={auth_token}</string>
+    <string name="upload_uri">https://upload.box.net/api/1.0/upload/{authToken}/{folderId}</string>
 </resources>
