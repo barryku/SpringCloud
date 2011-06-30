@@ -11,6 +11,9 @@ import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.params.BasicHttpParams;
+import org.apache.http.params.HttpConnectionParams;
+import org.apache.http.params.HttpParams;
 
 import android.os.AsyncTask;
 import android.util.Log;
@@ -29,7 +32,10 @@ public class LinkPoster extends AsyncTask<String, Void, String> {
 	
 	@Override
 	protected String doInBackground(String... params) {
-		DefaultHttpClient client = new DefaultHttpClient();
+		HttpParams httpParameters = new BasicHttpParams();
+		HttpConnectionParams.setConnectionTimeout(httpParameters, 5000);
+		HttpConnectionParams.setSoTimeout(httpParameters, 5000);
+		DefaultHttpClient client = new DefaultHttpClient(httpParameters);
 		String result = null;
 		try {					
 			String requestUri = params[0];
@@ -47,17 +53,16 @@ public class LinkPoster extends AsyncTask<String, Void, String> {
 					try {
 						httpResult = convertStreamToString(entity.getContent());
 					} catch (IOException e) {
-						Log.e(LOG_TAG, e.getMessage());
+						httpResult = e.getMessage();
 					}
 					return httpResult;
 				}						
 				
 			});
-		} catch (ClientProtocolException e) {
+		} catch (Exception e) {
+			result = e.getMessage();
 			Log.e(LOG_TAG, e.getMessage());
-		} catch (IOException e) {
-			Log.e(LOG_TAG, e.getMessage());
-		}
+		} 
 		return result;
 	}					
 	
@@ -65,18 +70,21 @@ public class LinkPoster extends AsyncTask<String, Void, String> {
 	protected void onPostExecute(String resultCode) {
 		super.onPostExecute(resultCode);
 		Log.d(LOG_TAG, "postExecute:[" + resultCode + "]");	
-		String msg = "Unknown error";
+		String msg = null;
 		String code = resultCode;
 		if (resultCode != null) {
 			code = resultCode.substring(0, 3);
 			msg = RESPONSE_CODE.get(code);
-		} 
+		}  else {
+			msg = "Unknown error";
+		}
+		
 		if (SUCCESSFUL_CODE.equals(code)) {
 			Toast.makeText(parent, msg, Toast.LENGTH_SHORT).show();
 				parent.doPostDone();
 		} else {
 			parent.saveLink(linkUri);
-			Toast.makeText(parent, msg + " URL link is saved.", Toast.LENGTH_LONG).show();
+			Toast.makeText(parent, (msg==null?resultCode:msg) + ", URL link is saved.", Toast.LENGTH_LONG).show();
 		}						
 	}
 	
