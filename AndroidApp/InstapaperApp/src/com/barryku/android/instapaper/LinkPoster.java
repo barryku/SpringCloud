@@ -76,7 +76,7 @@ public class LinkPoster extends AsyncTask<String, Void, String> {
 			code = resultCode.substring(0, 3);
 			msg = RESPONSE_CODE.get(code);
 		}  else {
-			msg = "Unknown error";
+			msg = "Unknown error.";
 		}
 		
 		if (SUCCESSFUL_CODE.equals(code)) {
@@ -84,7 +84,8 @@ public class LinkPoster extends AsyncTask<String, Void, String> {
 				parent.doPostDone();
 		} else {
 			parent.saveLink(linkUri);
-			Toast.makeText(parent, (msg==null?resultCode:msg) + ", URL link is saved.", Toast.LENGTH_LONG).show();
+			Toast.makeText(parent, (msg==null? resultCode + "." : msg) + 
+					" URL link is saved.", Toast.LENGTH_LONG).show();
 		}						
 	}
 	
