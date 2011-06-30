@@ -53,14 +53,14 @@ public class LinkPoster extends AsyncTask<String, Void, String> {
 					try {
 						httpResult = convertStreamToString(entity.getContent());
 					} catch (IOException e) {
-						httpResult = e.getMessage();
+						httpResult = e.getMessage() + ".";
 					}
 					return httpResult;
 				}						
 				
 			});
 		} catch (Exception e) {
-			result = e.getMessage();
+			result = e.getMessage() + ".";
 			Log.e(LOG_TAG, e.getMessage());
 		} 
 		return result;
@@ -84,7 +84,7 @@ public class LinkPoster extends AsyncTask<String, Void, String> {
 				parent.doPostDone();
 		} else {
 			parent.saveLink(linkUri);
-			Toast.makeText(parent, (msg==null? resultCode + "." : msg) + 
+			Toast.makeText(parent, (msg==null? resultCode : msg) + 
 					" URL link is saved.", Toast.LENGTH_LONG).show();
 		}						
 	}
