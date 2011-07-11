@@ -15,7 +15,7 @@
  	 <keystore.linux>/home/barry/dev/android/market/android-key.keystore</keystore.linux>
  	 
  	 <!--  change the following for Linux vs. Windows -->
- 	 <target.device>usb</target.device>
+ 	 <target.device>emulator</target.device>
  	 <sdk>${sdk.linux}</sdk>
  	 <keystore>${keystore.linux}</keystore>
  	 
