@@ -92,7 +92,7 @@ public class InstapaperActivity extends Activity {
     
     private void refreshListView(final ListView lview) {
     	TextView msg = (TextView) findViewById(R.id.user_message);
-    	msg.setText("");
+    	msg.setText("Tap on any saved URL to resend it to Instapaper.");
     	lview.setAdapter(new ArrayAdapter<UrlLink>(this, android.R.layout.simple_list_item_1, db.getLinks()));
     	lview.invalidate();  
     	lview.setVisibility(View.VISIBLE);

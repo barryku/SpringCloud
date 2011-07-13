@@ -16,9 +16,8 @@
  	 
  	 <!--  change the following for Linux vs. Windows -->
  	 <target.device>emulator</target.device>
- 	 <sdk>${sdk.win}</sdk>
- 	 <keystore>${keystore.win}</keystore>
- 	 
+ 	 <sdk>${sdk.linux}</sdk>
+ 	 <keystore>${keystore.linux}</keystore>	 
  	</properties>
  	<profiles>
         <profile>
