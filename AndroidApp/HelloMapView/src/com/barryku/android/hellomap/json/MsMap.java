@@ -1,4 +1,4 @@
-package com.barryku.android.tryit.json;
+package com.barryku.android.hellomap.json;
 
 import java.util.List;
 

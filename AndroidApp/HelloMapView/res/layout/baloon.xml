@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.barryku.android.hellomap.BaloonLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/transparent_panel"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:paddingLeft="5px"
+    android:paddingTop="5px"
+    android:paddingRight="5px"
+    android:paddingBottom="5px">
+    <RelativeLayout
+      xmlns:android="http://schemas.android.com/apk/res/android"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content">
+        <TextView 
+            android:id="@+id/note_txt" 
+            android:layout_width="wrap_content" 
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true" 
+            android:text="Title"
+        />
+        <ImageView
+            android:id="@+id/go_button"
+            android:layout_width="wrap_content" 
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:paddingRight="10px"        
+            android:src="@drawable/right_arrow"
+            android:clickable="true"
+        />        
+    </RelativeLayout>
+</com.barryku.android.hellomap.BaloonLayout>
+
