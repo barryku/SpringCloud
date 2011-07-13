@@ -8,11 +8,11 @@ import android.graphics.RectF;
 import android.util.AttributeSet;
 import android.widget.LinearLayout;
 
-public class BaloonLayout extends LinearLayout {
+public class BalloonLayout extends LinearLayout {
 
 
 	
-	public BaloonLayout(Context context, AttributeSet attrs) {
+	public BalloonLayout(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		// TODO Auto-generated constructor stub
 	}

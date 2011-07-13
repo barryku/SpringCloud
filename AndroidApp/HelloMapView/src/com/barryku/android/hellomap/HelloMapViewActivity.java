@@ -42,7 +42,7 @@ public class HelloMapViewActivity extends MapActivity  {
 	private List<Overlay> mapOverlays;
 	private Drawable drawable;
 	private HelloItemizedOverlay itemizedOverlay;
-	private BaloonLayout noteBaloon;
+	private BalloonLayout noteBalloon;
 	
     /** Called when the activity is first created. */
     @Override
@@ -50,7 +50,7 @@ public class HelloMapViewActivity extends MapActivity  {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
 		
-        setupBaloonLayout(); 
+        setupBalloonLayout(); 
         mapView = (MapView) findViewById(R.id.mapview);
         mapView.setBuiltInZoomControls(true);
         mapOverlays = mapView.getOverlays();
@@ -58,8 +58,8 @@ public class HelloMapViewActivity extends MapActivity  {
         itemizedOverlay = new HelloItemizedOverlay(this, drawable);        
         
         try {
-        	setupKmlOverlays();
-			//setupJsonOverlays();
+        	//setupKmlOverlays();
+			setupJsonOverlays();
 			mapOverlays.add(itemizedOverlay);
 			adjustMapZoomCenter();
 		} catch (Exception e) {
@@ -100,7 +100,7 @@ public class HelloMapViewActivity extends MapActivity  {
 		KmlRoot kml = serializer.read(KmlRoot.class, is);
 		List<Placemark> markers = kml.getDocument().getPlacemarks();		
 		for (Placemark marker: markers) {
-			point = getGeoPoint(marker.getCoordinates());
+			point = getGeoPointFromCoordiate(marker.getCoordinates());
 			Log.d(LOG_TAG, marker.getName());
 			itemizedOverlay.addOverlay(new OverlayItem(point, marker.getName(), marker.getDescription()));			
 		}
@@ -138,19 +138,11 @@ public class HelloMapViewActivity extends MapActivity  {
 
     }
     
-    private void setupBaloonLayout() {
+    private void setupBalloonLayout() {
 		LayoutInflater layoutInflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
-		noteBaloon = (BaloonLayout) layoutInflater.inflate(R.layout.baloon, null);
-				
-		/**
-		RelativeLayout.LayoutParams layoutParams = new
-		RelativeLayout.LayoutParams(200,200);
-		layoutParams.addRule(RelativeLayout.CENTER_VERTICAL);
-		layoutParams.addRule(RelativeLayout.CENTER_HORIZONTAL);
-		noteBaloon.setLayoutParams(layoutParams);
-		 **/
-
-		TextView title = (TextView) noteBaloon.findViewById(R.id.note_txt);
+		noteBalloon = (BalloonLayout) layoutInflater.inflate(R.layout.balloon, null);
+		
+		TextView title = (TextView) noteBalloon.findViewById(R.id.note_txt);
 		title.setOnClickListener(new OnClickListener() {
 
 			public void onClick(View v) {
@@ -159,7 +151,7 @@ public class HelloMapViewActivity extends MapActivity  {
 
 		});
 		
-		ImageView goButton = (ImageView) noteBaloon.findViewById(R.id.go_button);
+		ImageView goButton = (ImageView) noteBalloon.findViewById(R.id.go_button);
 		goButton.setOnClickListener(new OnClickListener() {
 
 			public void onClick(View v) {
@@ -169,21 +161,8 @@ public class HelloMapViewActivity extends MapActivity  {
 		});
     }
     
-    private int placeUrlIndex;    
-    public void setPlaceUrlIndex(int index) {
-    	placeUrlIndex = index;
-    }
-    
-    private void goPlace() {
-    	if (placeUrlMap != null) {
-    		Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(placeUrlMap.get(placeUrlIndex)));
-    		startActivity(intent);
-    	} else {
-    		removeBaloonTip();
-    	}
-    }
-    
-    private GeoPoint getGeoPoint(String coordinate) {
+   
+    private GeoPoint getGeoPointFromCoordiate(String coordinate) {
     	StringTokenizer st = new StringTokenizer(coordinate, ",");
     	float lo = Float.parseFloat(st.nextToken());
     	float la = Float.parseFloat(st.nextToken());
@@ -194,17 +173,32 @@ public class HelloMapViewActivity extends MapActivity  {
     protected boolean isRouteDisplayed() {
         return false;
     }
-	
-	public void doTap(OverlayItem noteOverlay, String txt) {
-    	mapView.removeView(noteBaloon);
-    	noteBaloon.setVisibility(View.VISIBLE);
-    	((TextView)noteBaloon.findViewById(R.id.note_txt)).setText(txt);
-    	MapController mapController = mapView.getController();
-    	mapController.animateTo(noteOverlay.getPoint());
-    	mapView.addView(noteBaloon, new MapView.LayoutParams(12*txt.getBytes().length,55,noteOverlay.getPoint(),MapView.LayoutParams.BOTTOM_CENTER));
+
+    private void goPlace() {
+    	if (placeUrlMap != null) {
+    		Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(placeUrlMap.get(placeUrlIndex)));
+    		startActivity(intent);
+    	} else {
+    		removeBalloonTip();
+    	}
     }
     
-    public void removeBaloonTip() {
-    	noteBaloon.setVisibility(View.GONE);                    
+    //the following methods are called by HelloItemizedOverlay.onTap();
+    private int placeUrlIndex;    
+    public void setPlaceUrlIndex(int index) {
+    	placeUrlIndex = index;
+    }    
+ 
+	public void doTap(OverlayItem noteOverlay, String txt) {
+    	mapView.removeView(noteBalloon);
+    	noteBalloon.setVisibility(View.VISIBLE);
+    	((TextView)noteBalloon.findViewById(R.id.note_txt)).setText(txt);
+    	MapController mapController = mapView.getController();
+    	mapController.animateTo(noteOverlay.getPoint());
+    	mapView.addView(noteBalloon, new MapView.LayoutParams(12*txt.getBytes().length,55,noteOverlay.getPoint(),MapView.LayoutParams.BOTTOM_CENTER));
+    }
+    
+    public void removeBalloonTip() {
+    	noteBalloon.setVisibility(View.GONE);                    
     }
 }

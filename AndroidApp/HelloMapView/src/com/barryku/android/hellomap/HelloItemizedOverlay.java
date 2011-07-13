@@ -37,7 +37,7 @@ public class HelloItemizedOverlay extends ItemizedOverlay<OverlayItem> {
 	@Override
 	public boolean onTap(GeoPoint point, MapView view) {
 		Log.d(LOG_TAG, "onTap point/view: " + point + "," + view);
-		parent.removeBaloonTip();
+		parent.removeBalloonTip();
 		return super.onTap(point, view);
 	}
 	

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.barryku.android.hellomap.BaloonLayout
+<com.barryku.android.hellomap.BalloonLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/transparent_panel"
     android:layout_width="fill_parent"
@@ -29,5 +29,5 @@
             android:clickable="true"
         />        
     </RelativeLayout>
-</com.barryku.android.hellomap.BaloonLayout>
+</com.barryku.android.hellomap.BalloonLayout>
 

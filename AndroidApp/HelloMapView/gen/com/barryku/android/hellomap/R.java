@@ -23,7 +23,7 @@ public final class R {
         public static final int transparent_panel=0x7f050000;
     }
     public static final class layout {
-        public static final int baloon=0x7f030000;
+        public static final int balloon=0x7f030000;
         public static final int main=0x7f030001;
     }
     public static final class string {
