@@ -7,6 +7,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -56,10 +57,11 @@ public class InstapaperActivity extends Activity {
 				final String uri = (String) intent.getExtras().get(Intent.EXTRA_TEXT);
 				Log.d(LOG_TAG, "uri:" + uri);
 				ConnectivityManager cMgr = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
-				if (!cMgr.getActiveNetworkInfo().isAvailable()) {
-					db.addLink(uri);
-				} else {			
+				NetworkInfo networkInfo = cMgr.getActiveNetworkInfo();
+				if (networkInfo.isAvailable() && networkInfo.isConnectedOrConnecting()) {
 					doPost(uri);
+				} else {					
+					db.addLink(uri);
 				}
 			} 
 		} else {			
@@ -67,6 +69,7 @@ public class InstapaperActivity extends Activity {
 		}
     }       
     
+    //invoked by AsyncTask at LinkPoster.onPostExecution() to close Activity and return to the web browser
     public void doPostDone() {
     	if (isInvokedFromShareVia)
     		finish();
