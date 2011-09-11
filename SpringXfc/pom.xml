@@ -104,5 +104,17 @@
 		<type>jar</type>
 		<scope>compile</scope>
 	</dependency>
+	<dependency>
+		<groupId>com.sforce.wsc</groupId>
+		<artifactId>wsc</artifactId>
+		<version>2.2</version>
+		<type>jar</type>
+	</dependency>
+	<dependency>
+		<groupId>com.sforce.wsc</groupId>
+		<artifactId>partner</artifactId>
+		<version>2.2</version>
+		<type>jar</type>
+	</dependency>
   </dependencies>
 </project>
