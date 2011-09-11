@@ -7,18 +7,24 @@
   <groupId>com.barryku.cloud</groupId>
   <artifactId>SpringXfc</artifactId>
   <packaging>war</packaging>
-  <version>1.0-SNAPSHOT</version>
+  <version>1.0</version>
   <name>Spring MVC Application - SpringXfc</name>
   <url>http://www.barryku.com/springmvc</url>
   
   <properties>
     <org.springframework.version>3.0.5.RELEASE</org.springframework.version>
+    <cxf.version>2.4.2</cxf.version>
   </properties>
   
   <repositories>
     <repository>
       <id>jboss Maven repo</id>
-      <url>http://repository.jboss.org/maven2</url>
+      <!-- <url>http://repository.jboss.org/maven2</url>-->
+      <url>http://repository.jboss.org/nexus/content/groups/developer/</url>
+    </repository>
+    <repository>
+      <id>apache</id>
+      <url>https://repository.apache.org/content/repositories/public</url>
     </repository>
   </repositories>
   
@@ -33,6 +39,7 @@
   <build>
     <plugins>
       <plugin>
+      	<version>2.0.2</version>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
         <configuration>
@@ -80,5 +87,22 @@
     	<artifactId>jstl</artifactId>
     	<version>1.2</version>
     </dependency>    
+    <dependency>
+		<groupId>org.apache.cxf</groupId>
+		<artifactId>cxf-rt-frontend-jaxws</artifactId>
+		<version>${cxf.version}</version>
+	</dependency>
+	<dependency>
+		<groupId>org.apache.cxf</groupId>
+		<artifactId>cxf-rt-transports-http</artifactId>
+		<version>${cxf.version}</version>
+	</dependency>
+	<dependency>
+		<groupId>geronimo</groupId>
+		<artifactId>geronimo-javamail-transport</artifactId>
+		<version>1.1.1</version>
+		<type>jar</type>
+		<scope>compile</scope>
+	</dependency>
   </dependencies>
 </project>
