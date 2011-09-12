@@ -8,7 +8,7 @@
 	http://www.springframework.org/schema/context/spring-context-3.0.xsd"
 	xmlns:context="http://www.springframework.org/schema/context">
 
-    <context:property-placeholder location="/WEB-INF/spring.properties"/>	
+    <context:property-placeholder ignore-resource-not-found="true" ignore-unresolvable="true" location="/WEB-INF/spring.properties, file:/home/barry/dev/spring-props/spring.properties"/>	
 	<context:component-scan base-package="com.barryku.cloud.controller"></context:component-scan>
 	<bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter"/>	
 	<bean class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping">
@@ -22,5 +22,11 @@
         <property name="suffix" value=".jsp" />
         <property name="order" value="1" />
     </bean>
+    
+   	<bean id="springProperties" class="com.barryku.cloud.model.SpringProperties">
+		<property name="userName" value="${sforce.userName}"/>
+		<property name="password" value="${sforce.password}"/>
+		<property name="securityToken" value="${sforce.securityToken}"/>
+	</bean>
     
 </beans>

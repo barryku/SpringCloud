@@ -21,7 +21,7 @@
 	  address="/sforceNotify" />
 	    
 	<bean id="userDao" class="com.barryku.cloud.dao.UserDao" />
-
+	
 	<bean id="greetingService" class="com.barryku.cloud.service.GreetingService">
 		<property name="dao" ref="userDao"/>
 	</bean>
